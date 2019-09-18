@@ -7,7 +7,7 @@ import os
 
 class sqlpp11Conan(ConanFile):
     name = "sqlpp11"
-    version = "0.57"
+    version = "0.58"
     description = "A type safe embedded domain specific language for SQL queries and results in C++."
     settings = "os", "compiler", "build_type", "arch"
     url = "https://github.com/bincrafters/conan-sqlpp11"
@@ -23,14 +23,9 @@ class sqlpp11Conan(ConanFile):
 
     def source(self):
         tools.get("{0}/archive/{1}.tar.gz".format(self.homepage, self.version),
-                  sha256="5f780bcaf81f38b260bb0d94f3b770f0c6e33a09601d76ab9cc905d3c0edcb88")
+                  sha256="d5ecb49e45c58259036574cefaefc8cfdea9bb904157f5d341fd424726ad95b3")
         extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self._source_subfolder)
-
-        # https://github.com/rbock/sqlpp11/issues/248
-        char_sequence = os.path.join(self._source_subfolder, "include", "sqlpp11", "char_sequence.h")
-        tools.replace_in_file(char_sequence, "Input", "s")
-        tools.replace_in_file(char_sequence, "(&s)[N]", "*s")
 
     def _configure_cmake(self):
         cmake = CMake(self)
